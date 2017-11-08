@@ -1,9 +1,12 @@
 'use strict';
 
-const express = require('express')
+const express = require('express');
 const pg = require('pg');
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
+
 const PORT = process.env.PORT || 3000;
 const CLIENT_URL = process.env.CLIENT_URL;
 const SQL_URL = process.env.DATABASE_URL;
