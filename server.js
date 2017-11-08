@@ -14,14 +14,20 @@ const sqlClient = new pg.Client(sqlConString)
 
 app.use(cors());
 
+app.get('/tasks', (request, response) =>
+  sqlClient.query(`SELECT * from tasks;`)
+    .then(results => response.send(results.rows))
+    .catch(console.log(response))
+)
+
 app.get('/', (request, response) =>
   response.send('Testing!')
 )
 
 sqlClient.connect();
 sqlClient.on('error', err => {
-  console.err('Problem with SQL connection.');
-  console.err(err);
+  console.log('Problem with SQL connection.');
+  console.log(err);
 })
 
 app.get('*', (request, response) => response.redirect(CLIENT_URL));
@@ -32,14 +38,25 @@ app.get('/app', (request, response) =>
   response.send('Hello This is VergilPrime')
 )
 
-sqlClient.query(`
-  CREATE TABLE IF NOT EXISTS
-  booklist-test(
-    test_id SERIAL PRIMARY KEY,
-    value TEXT NOT NULL
-  )
-`)
-  .then()
-  .catch(
-    console.err('There was a problem instantiating the SQL table')
-  );
+// TODO: I don't understand this syntax, also the json data doesn't get passed
+function loadDB() {
+  sqlClient.query(`
+    CREATE TABLE IF NOT EXISTS
+    tasks(
+      id SERIAL PRIMARY KEY,
+      title VARCHAR(255),
+      description VARCHAR(255),
+      contact VARCHAR(255),
+      status VARCHAR(255),
+      category VARCHAR(255),
+      due VARCHAR(255),
+    )
+  `)
+    .then()
+    .catch(
+      console.log('There was a problem instantiating the SQL table')
+    );
+}
+
+// TODO: I just added this line as a patch so once I figure out when loadDB is called I can remove it.
+loadDB();
