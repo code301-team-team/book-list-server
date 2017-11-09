@@ -15,5 +15,5 @@ const SQL_URL = process.env.DATABASE_URL;
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
 app.get('/test', (request, response) =>
-  response.send('Woot! Proof of life! Boop!')
+  response.send('Woot! Proof of life! Boop! Beep!')
 )
