@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 
 const PORT = process.env.PORT || 3000;
-const CLIENT_URL = process.env.CLIENT_URL;
+//const CLIENT_URL = process.env.CLIENT_URL;
 const SQL_URL = process.env.DATABASE_URL;
 
 const sqlClient = new pg.Client(SQL_URL);
@@ -24,4 +24,11 @@ app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
 app.get('/test', (request, response) =>
   response.send('Woot! Proof of life!')
-)
+);
+
+app.get('/api/v1/books', (request, response) => {
+  sqlClient.query(
+    `SELECT book_id, title, author, image_url FROM books;`)
+    .then(result => {response.send(result.rows)})
+    .catch(err => {console.log(err)})
+});
