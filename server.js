@@ -47,8 +47,8 @@ app.get('/api/v1/books/:book_id', bodyParser, (request, response) => {
 });
 
 app.post('/api/v1/books/add', bodyParser, (request, response) => {
+  let {title, author, isbn, image_url, description} = request.body;
   sqlClient.query(
-    let {title,author,isbn,image_url,description} = request.body;
     `INSERT INTO books (title, author, isbn, image_url, description)
     VALUES ($1, $2, $3, $4, $5);`,
     [title,author,isbn,image_url,description]
