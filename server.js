@@ -1,5 +1,6 @@
 'use strict';
 
+console.log('1');
 const express = require('express');
 const pg = require('pg');
 const cors = require('cors');
