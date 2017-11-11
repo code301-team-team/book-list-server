@@ -40,7 +40,7 @@ app.get('/api/v1/books/:id', (request, response) => {
   console.log(request);
   let id = request.params.id;
   sqlClient.query(
-    `SELECT title, author, image_url, description
+    `SELECT title, author, image_url, description, isbn
      FROM books
      WHERE book_id = $1;`,
     [id]
