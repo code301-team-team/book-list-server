@@ -35,12 +35,15 @@ app.get('/api/v1/books', (request, response) => {
     .catch(err => {console.log(`Get: All-Books query to DB Failed: ${err}`)})
 });
 
-app.get('/api/v1/books/:book_id', bodyParser, (request, response) => {
-  let {book_id} = request.body;
+
+app.get('/api/v1/books/:id', (request, response) => {
+  console.log(request);
+  let id = request.params.id;
   sqlClient.query(
-    `SELECT title, author, image_url, description
+    `SELECT title, author, image_url, description, isbn
+     FROM books
      WHERE book_id = $1;`,
-    [book_id]
+    [id]
   )
     .then(result => {response.send(result.rows)})
     .catch(err => {console.log(`Get: One-Book query to DB Failed: ${err}`)})
