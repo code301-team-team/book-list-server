@@ -36,7 +36,8 @@ app.get('/api/v1/books', (request, response) => {
 });
 
 
-app.get('/api/v1/books/:id', bodyParser, (request, response) => {
+app.get('/api/v1/books/:id', (request, response) => {
+  console.log(request);
   let id = request.params.id;
   sqlClient.query(
     `SELECT title, author, image_url, description
