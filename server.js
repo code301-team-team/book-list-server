@@ -41,6 +41,7 @@ app.get('/api/v1/books/:id', (request, response) => {
   let id = request.params.id;
   sqlClient.query(
     `SELECT title, author, image_url, description
+     FROM books
      WHERE book_id = $1;`,
     [id]
   )
