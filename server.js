@@ -1,8 +1,10 @@
 'use strict';
 
+console.log('1');
 const express = require('express');
 const pg = require('pg');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
 app.use(cors());
@@ -30,5 +32,27 @@ app.get('/api/v1/books', (request, response) => {
   sqlClient.query(
     `SELECT book_id, title, author, image_url FROM books;`)
     .then(result => {response.send(result.rows)})
+    .catch(err => {console.log(err)})
+});
+
+app.get('/api/v1/books/:book_id', bodyParser, (request, response) => {
+  let {book_id} = request.body
+  sqlClient.query(
+    `SELECT title, author, image_url, description
+     WHERE book_id = $1;`,
+    [book_id]
+  )
+    .then(result => {response.send(result.rows)})
+    .catch(err => {console.log(err)})
+});
+
+app.post('/api/v1/books/add', bodyParser, (request, response) => {
+  let {title, author, isbn, image_url, description} = request.body;
+  sqlClient.query(
+    `INSERT INTO books (title, author, isbn, image_url, description)
+    VALUES ($1, $2, $3, $4, $5);`,
+    [title,author,isbn,image_url,description]
+  )
+    .then(result => {response.sendStatus(201)})
     .catch(err => {console.log(err)})
 });
