@@ -47,6 +47,7 @@ app.get('/api/v1/books/:book_id', bodyParser, (request, response) => {
 });
 
 app.post('/api/v1/books/add', bodyParser, (request, response) => {
+  console.log('Book.newOne queried the server.js.');
   let {title, author, isbn, image_url, description} = request.body;
   sqlClient.query(
     `INSERT INTO books (title, author, isbn, image_url, description)
