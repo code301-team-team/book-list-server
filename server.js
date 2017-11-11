@@ -35,6 +35,7 @@ app.get('/api/v1/books', (request, response) => {
     .catch(err => {console.log(`Get: All-Books query to DB Failed: ${err}`)})
 });
 
+
 app.get('/api/v1/books/:id', bodyParser, (request, response) => {
   let id = request.params.id;
   sqlClient.query(
