@@ -52,9 +52,11 @@ app.get('/api/v1/books/:id', (request, response) => {
 app.post('/api/v1/books/add', bodyParser, (request, response) => {
   console.log('Book.newOne queried the server.js.');
   let {title, author, isbn, image_url, description} = request.body;
+  console.log(title, author, isbn, image_url, description);
+
   sqlClient.query(
-    `INSERT INTO books (title, author, isbn, image_url, description)
-    VALUES ($1, $2, $3, $4, $5);`,
+    `INSERT INTO books(title, author, isbn, image_url, description)
+    VALUES ('$1', '$2', '$3', '$4', '$5');`,
     [title,author,isbn,image_url,description]
   )
     .then(() => {response.sendStatus(201)})
