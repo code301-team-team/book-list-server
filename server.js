@@ -4,7 +4,7 @@ console.log('1');
 const express = require('express');
 const pg = require('pg');
 const cors = require('cors');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser').urlencoded({extended:true});
 
 const app = express();
 app.use(cors());
@@ -35,24 +35,27 @@ app.get('/api/v1/books', (request, response) => {
     .catch(err => {console.log(err)})
 });
 
-app.get('/api/v1/books/:book_id', bodyParser, (request, response) => {
-  let {book_id} = request.body
+app.get('/api/v1/books/:id', (request, response) => {
+  let id = request.params.id;
   sqlClient.query(
-    `SELECT title, author, image_url, description
+    `SELECT title, author, image_url, description, isbn
+     FROM books
      WHERE book_id = $1;`,
     [book_id]
   )
     .then(result => {response.send(result.rows)})
-    .catch(err => {console.log(err)})
+    .catch(err => {console.log(`Get One   Book query to DB Failed: ${err}`)})
 });
 
 app.post('/api/v1/books/add', bodyParser, (request, response) => {
+
   let {title, author, isbn, image_url, description} = request.body;
+
   sqlClient.query(
-    `INSERT INTO books (title, author, isbn, image_url, description)
-    VALUES ($1, $2, $3, $4, $5);`,
-    [title,author,isbn,image_url,description]
+    `INSERT INTO books(title, author, isbn, image_url, description)
+    VALUES($1, $2, $3, $4, $5)`,
+    [title, author, isbn, image_url, description]
   )
-    .then(result => {response.sendStatus(201)})
-    .catch(err => {console.log(err)})
+    .then(() => {response.sendStatus(201)})
+    .catch(err => {console.log(`Post Single Book query to DB Failed: ${err}`)})
 });
