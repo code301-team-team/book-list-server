@@ -32,9 +32,8 @@ app.get('/api/v1/books', (request, response) => {
   sqlClient.query(
     `SELECT book_id, title, author, image_url FROM books;`)
     .then(result => {response.send(result.rows)})
-    .catch(err => {console.log(`Get: All-Books query to DB Failed: ${err}`)})
+    .catch(err => {console.log(err)})
 });
-
 
 app.get('/api/v1/books/:id', (request, response) => {
   let id = request.params.id;
@@ -42,7 +41,7 @@ app.get('/api/v1/books/:id', (request, response) => {
     `SELECT title, author, image_url, description, isbn
      FROM books
      WHERE book_id = $1;`,
-    [id]
+    [book_id]
   )
     .then(result => {response.send(result.rows)})
     .catch(err => {console.log(`Get One   Book query to DB Failed: ${err}`)})
